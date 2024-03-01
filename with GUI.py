@@ -39,12 +39,14 @@ class Application(tk.Frame):
 		self.label.grid(row=0, column=0)
 		self.label.grid_propagate(False)
 
+		self.date = self.current_date()
 		self.label_bg = 'Gray92'
 		self.city = tk.StringVar()
 		self.city.set('')
 
 		self.draw_frames()
 		self.draw_widgets()
+		self.current_time()
 
 		self.master.bind('<Return>', self.get_weather)
 
@@ -97,6 +99,15 @@ class Application(tk.Frame):
 							, bg='DodgerBlue2', fg='white')
 		self.app_label.grid(row=0, column=0, ipady=10, ipadx=10)
 
+		# self.datetime_frame
+		self.date_label = tk.Label(self.datetime_frame, text=self.date , font=('Arial', 15, 'bold')
+							, bg='DodgerBlue2', fg='white', anchor='w')
+		self.date_label.grid(row=0, column=0, ipady=14, ipadx=0)
+
+		self.time_label = tk.Label(self.datetime_frame , font=('Calibri', 14)
+							, bg='DodgerBlue2', fg='white', anchor='w')
+		self.time_label.grid(row=1, column=0, ipady=0, ipadx=0)
+
 		# self.search_frame
 		self.search_label = tk.Label(self.search_frame, text='Search City : '
 							,bg='DodgerBlue2', fg='white', anchor='w',
@@ -117,6 +128,14 @@ class Application(tk.Frame):
 							 font=('Arial', 10, 'bold'), width=19)
 		self.city_label.grid(row=0, column=3, ipady=3,  padx=(41,0))
 
+	def current_time(self):
+		dt = datetime.datetime.now()
+		self.time_label['text'] = dt.strftime('%I:%M:%S %p')
+		self.time_label.after(1000, self.current_time)
+
+	def current_date(self):
+		dt = datetime.datetime.today()
+		return dt.strftime('%d %b, %Y')
 
 	def weather_search(self):
 		self.get_weather()
